@@ -14,14 +14,14 @@ void main() async {
 //   It's only for insert data in database for the 1st time.
 //   No need to execute all the time.
 
-  final database =
+  /*final database =
       await $FloorAppDatabase.databaseBuilder('database.db').build();
   final dao = database.vocabularyDao;
   dao.deleteAllVocabulary();
   for (var i in allVocabulary) {
     dao.insertVocabulary(
         EntityModel(vocabulary: i['vocabulary'], meaning: i['meaning']));
-  }
+  }*/
 // **************************************************************************
 
   runApp(const MyApp());
