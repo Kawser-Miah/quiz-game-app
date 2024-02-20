@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:quiz_app_v1/data_source/model/entity.dart';
-import 'package:quiz_app_v1/view/question_view_bloc/question_view_bloc.dart';
+// import 'package:quiz_app_v1/data_source/model/entity.dart';
 import 'package:quiz_app_v1/view/select_option_bloc/select_option_bloc.dart';
 import 'data_source/bloc/question_bloc.dart';
 import 'src/home_page.dart';
-import 'data_source/database/question_database.dart';
+// import 'data_source/database/question_database.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -35,7 +34,7 @@ class MyApp extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider(create: (context) => QuestionBloc()),
-        BlocProvider(create: (context) => QuestionViewBloc()),
+        // BlocProvider(create: (context) => QuestionViewBloc()),
         BlocProvider(create: (context) => SelectOptionBloc()),
       ],
       child: MaterialApp(

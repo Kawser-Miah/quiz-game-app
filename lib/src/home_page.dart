@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:quiz_app_v1/src/options.dart';
 import '../data_source/bloc/question_bloc.dart';
-
-import '../view/question_view_bloc/question_view_bloc.dart';
 import '../view/select_option_bloc/select_option_bloc.dart';
 import 'complete_page.dart';
 
@@ -31,197 +29,178 @@ class _HomePageState extends State<HomePage> {
             } else if (state is QuestionLoadingState) {
               return _loading();
             } else if (state is QuestionLoadedState) {
-              BlocProvider.of<QuestionViewBloc>(context)
+              BlocProvider.of<QuestionBloc>(context)
                   .add(ShowQuestionEvent(results: state.results));
               BlocProvider.of<SelectOptionBloc>(context).add(InitialEvent());
-              return BlocBuilder<QuestionViewBloc, QuestionViewState>(
-                  builder: (context, subState) {
-                if (subState is QuestionViewInitialState) {
-                  return _loading();
-                } else if (subState is LoadingState) {
-                  return _loading();
-                } else if (subState is ShowQuestionState) {
-                  return Column(
-                    children: [
-                      SizedBox(
-                        height: 421,
-                        width: 400,
-                        child: Stack(
-                          children: [
-                            Container(
-                              height: 240,
-                              width: 390,
-                              decoration: BoxDecoration(
-                                  color: Colors.deepPurpleAccent,
-                                  borderRadius: BorderRadius.circular(20)),
-                            ),
-                            Positioned(
-                                bottom: 60,
-                                left: 20,
-                                child: Container(
-                                  height: 170,
-                                  width: 350,
-                                  decoration: const BoxDecoration(
-                                    color: Colors.white,
-                                    borderRadius:
-                                        BorderRadius.all(Radius.circular(20)),
-                                    boxShadow: [
-                                      BoxShadow(
-                                        offset: Offset(0, 1),
-                                        blurRadius: 5,
-                                        spreadRadius: 3,
-                                        color: Colors.deepPurpleAccent,
-                                      )
-                                    ],
-                                  ),
-                                  child: Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                        horizontal: 18, vertical: 5),
-                                    child: Column(
+            } else if (state is ShowQuestionState) {
+              return Column(
+                children: [
+                  SizedBox(
+                    height: 421,
+                    width: 400,
+                    child: Stack(
+                      children: [
+                        Container(
+                          height: 240,
+                          width: 390,
+                          decoration: BoxDecoration(
+                              color: Colors.deepPurpleAccent,
+                              borderRadius: BorderRadius.circular(20)),
+                        ),
+                        Positioned(
+                            bottom: 60,
+                            left: 20,
+                            child: Container(
+                              height: 170,
+                              width: 350,
+                              decoration: const BoxDecoration(
+                                color: Colors.white,
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(20)),
+                                boxShadow: [
+                                  BoxShadow(
+                                    offset: Offset(0, 1),
+                                    blurRadius: 5,
+                                    spreadRadius: 3,
+                                    color: Colors.deepPurpleAccent,
+                                  )
+                                ],
+                              ),
+                              child: Padding(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 18, vertical: 5),
+                                child: Column(
+                                  children: [
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
                                       children: [
-                                        Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
-                                          children: [
-                                            Text(
-                                              '$correct',
-                                              style: const TextStyle(
-                                                  color: Colors.green,
-                                                  fontSize: 20),
-                                            ),
-                                            Text(
-                                              '$incorrect',
-                                              style: const TextStyle(
-                                                  color: Colors.red,
-                                                  fontSize: 20),
-                                            )
-                                          ],
-                                        ),
-                                        Center(
-                                          child: Text(
-                                            "Question ${questionCount + 1}/10",
-                                            style: const TextStyle(
-                                                color: Colors.deepPurpleAccent),
-                                          ),
-                                        ),
-                                        const SizedBox(
-                                          height: 25,
+                                        Text(
+                                          '$correct',
+                                          style: const TextStyle(
+                                              color: Colors.green,
+                                              fontSize: 20),
                                         ),
                                         Text(
-                                            '${subState.results?[questionCount].question}'),
+                                          '$incorrect',
+                                          style: const TextStyle(
+                                              color: Colors.red, fontSize: 20),
+                                        )
                                       ],
                                     ),
-                                  ),
-                                )),
-                            const Positioned(
-                                bottom: 210,
-                                left: 153,
-                                child: CircleAvatar(
-                                  radius: 42,
-                                  backgroundColor: Colors.white,
-                                  child: Center(
-                                    child: Text(
-                                      "15",
-                                      style: TextStyle(
-                                          color: Colors.deepPurpleAccent,
-                                          fontSize: 25),
+                                    Center(
+                                      child: Text(
+                                        "Question ${questionCount + 1}/10",
+                                        style: const TextStyle(
+                                            color: Colors.deepPurpleAccent),
+                                      ),
                                     ),
-                                  ),
-                                )),
-                          ],
-                        ),
-                      ),
-                      const SizedBox(
-                        height: 1,
-                      ),
-                      Options(
-                          option: subState.results?[questionCount].options![0],
-                          correct:
-                              subState.results?[questionCount].correctAnswer),
-                      Options(
-                          option: subState.results?[questionCount].options![1],
-                          correct:
-                              subState.results?[questionCount].correctAnswer),
-                      Options(
-                          option: subState.results?[questionCount].options![2],
-                          correct:
-                              subState.results?[questionCount].correctAnswer),
-                      Options(
-                          option: subState.results?[questionCount].options![3],
-                          correct:
-                              subState.results?[questionCount].correctAnswer),
-                      const SizedBox(
-                        height: 20,
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 18),
-                        child: BlocBuilder<SelectOptionBloc, SelectOptionState>(
-                          builder: (context, subSubState) {
-                            if (subSubState is CorrectOptionState) {
-                              correct++;
-                            } else if (subSubState is IncorrectOptionState) {
-                              incorrect++;
-                            }
-                            return ElevatedButton(
-                              style: ElevatedButton.styleFrom(
-                                backgroundColor: Colors.deepPurpleAccent,
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: 20, vertical: 15),
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(10),
+                                    const SizedBox(
+                                      height: 25,
+                                    ),
+                                    Text(
+                                        '${state.results?[questionCount].question}'),
+                                  ],
                                 ),
-                                elevation: 10,
                               ),
-                              onPressed: (subSubState is CorrectOptionState ||
-                                      subSubState is IncorrectOptionState)
-                                  ? () {
-                                      if (state.results!.length - 1 >
-                                          questionCount) {
-                                        questionCount++;
-                                        BlocProvider.of<QuestionViewBloc>(
-                                                context)
-                                            .add(ShowQuestionEvent(
-                                                results: state.results));
-                                        BlocProvider.of<SelectOptionBloc>(
-                                                context)
-                                            .add(InitialEvent());
-                                      } else {
-                                        BlocProvider.of<SelectOptionBloc>(
-                                                context)
-                                            .add(InitialEvent());
-                                        Navigator.pushReplacement(
-                                            context,
-                                            MaterialPageRoute(
-                                                builder: (context) => Completed(
-                                                      correct: correct,
-                                                      incorrect: incorrect,
-                                                    )));
-                                      }
-                                    }
-                                  : null,
+                            )),
+                        const Positioned(
+                            bottom: 210,
+                            left: 153,
+                            child: CircleAvatar(
+                              radius: 42,
+                              backgroundColor: Colors.white,
                               child: Center(
                                 child: Text(
-                                  "Next",
+                                  "15",
                                   style: TextStyle(
-                                      color:
-                                          (subSubState is CorrectOptionState ||
-                                                  subSubState
-                                                      is IncorrectOptionState)
-                                              ? Colors.white
-                                              : Colors.black,
-                                      fontSize: 18,
-                                      fontWeight: FontWeight.bold),
+                                      color: Colors.deepPurpleAccent,
+                                      fontSize: 25),
                                 ),
                               ),
-                            );
-                          },
-                        ),
-                      )
-                    ],
-                  );
-                }
-                return _loading();
-              });
+                            )),
+                      ],
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 1,
+                  ),
+                  Options(
+                      option: state.results?[questionCount].options![0],
+                      correct: state.results?[questionCount].correctAnswer),
+                  Options(
+                      option: state.results?[questionCount].options![1],
+                      correct: state.results?[questionCount].correctAnswer),
+                  Options(
+                      option: state.results?[questionCount].options![2],
+                      correct: state.results?[questionCount].correctAnswer),
+                  Options(
+                      option: state.results?[questionCount].options![3],
+                      correct: state.results?[questionCount].correctAnswer),
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 18),
+                    child: BlocBuilder<SelectOptionBloc, SelectOptionState>(
+                      builder: (context, subSubState) {
+                        if (subSubState is CorrectOptionState) {
+                          correct++;
+                        } else if (subSubState is IncorrectOptionState) {
+                          incorrect++;
+                        }
+                        return ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.deepPurpleAccent,
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 20, vertical: 15),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            elevation: 10,
+                          ),
+                          onPressed: (subSubState is CorrectOptionState ||
+                                  subSubState is IncorrectOptionState)
+                              ? () {
+                                  if (state.results!.length - 1 >
+                                      questionCount) {
+                                    questionCount++;
+                                    BlocProvider.of<QuestionBloc>(context).add(
+                                        ShowQuestionEvent(
+                                            results: state.results));
+                                    BlocProvider.of<SelectOptionBloc>(context)
+                                        .add(InitialEvent());
+                                  } else {
+                                    BlocProvider.of<SelectOptionBloc>(context)
+                                        .add(InitialEvent());
+                                    Navigator.pushReplacement(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) => Completed(
+                                                  correct: correct,
+                                                  incorrect: incorrect,
+                                                )));
+                                  }
+                                }
+                              : null,
+                          child: Center(
+                            child: Text(
+                              "Next",
+                              style: TextStyle(
+                                  color: (subSubState is CorrectOptionState ||
+                                          subSubState is IncorrectOptionState)
+                                      ? Colors.white
+                                      : Colors.black,
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.bold),
+                            ),
+                          ),
+                        );
+                      },
+                    ),
+                  )
+                ],
+              );
             } else if (state is QuestionErrorState) {
               return Center(
                 child: Container(

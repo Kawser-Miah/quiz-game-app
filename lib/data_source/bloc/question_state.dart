@@ -16,3 +16,9 @@ class QuestionErrorState extends QuestionState {
 
   QuestionErrorState({required this.errorMessage});
 }
+
+class ShowQuestionState extends QuestionState {
+  final List<QuestionModel>? results;
+
+  ShowQuestionState({required this.results});
+}
