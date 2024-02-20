@@ -35,7 +35,7 @@ class MyApp extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider(create: (context) => QuestionBloc()),
-        BlocProvider(create: (context) => QuestionViewBloc()),
+        // BlocProvider(create: (context) => QuestionViewBloc()),
         BlocProvider(create: (context) => SelectOptionBloc()),
       ],
       child: MaterialApp(
