@@ -143,10 +143,10 @@ class _HomePageState extends State<HomePage> {
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 18),
                     child: BlocBuilder<SelectOptionBloc, SelectOptionState>(
-                      builder: (context, subSubState) {
-                        if (subSubState is CorrectOptionState) {
+                      builder: (context, subState) {
+                        if (subState is CorrectOptionState) {
                           correct++;
-                        } else if (subSubState is IncorrectOptionState) {
+                        } else if (subState is IncorrectOptionState) {
                           incorrect++;
                         }
                         return ElevatedButton(
@@ -159,8 +159,8 @@ class _HomePageState extends State<HomePage> {
                             ),
                             elevation: 10,
                           ),
-                          onPressed: (subSubState is CorrectOptionState ||
-                                  subSubState is IncorrectOptionState)
+                          onPressed: (subState is CorrectOptionState ||
+                                  subState is IncorrectOptionState)
                               ? () {
                                   if (state.results!.length - 1 >
                                       questionCount) {
@@ -187,8 +187,8 @@ class _HomePageState extends State<HomePage> {
                             child: Text(
                               "Next",
                               style: TextStyle(
-                                  color: (subSubState is CorrectOptionState ||
-                                          subSubState is IncorrectOptionState)
+                                  color: (subState is CorrectOptionState ||
+                                          subState is IncorrectOptionState)
                                       ? Colors.white
                                       : Colors.black,
                                   fontSize: 18,
