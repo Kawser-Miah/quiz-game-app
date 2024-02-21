@@ -1,4 +1,5 @@
 import 'package:quiz_app_v1/data_source/model/question_model.dart';
+import '../../helper/enum_class.dart';
 
 abstract class QuestionState {}
 
@@ -15,4 +16,11 @@ class QuestionErrorState extends QuestionState {
   final String errorMessage;
 
   QuestionErrorState({required this.errorMessage});
+}
+
+class ShowQuestionState extends QuestionState {
+  final List<QuestionModel>? results;
+  final SelectOption selectOption;
+
+  ShowQuestionState({required this.results, required this.selectOption});
 }

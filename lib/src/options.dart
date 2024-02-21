@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../data_source/bloc/question_bloc.dart';
 import '../helper/enum_class.dart';
-import '../view/select_option_bloc/select_option_bloc.dart';
 
 class Options extends StatelessWidget {
   final String? option;
@@ -36,7 +35,7 @@ class Options extends StatelessWidget {
                   borderRadius: BorderRadius.circular(15),
                   border: Border.all(
                       width: 3,
-                      color: (state.selectOption == SelectOption.initial)
+                      color: (enable)
                           ? color
                           : ((option == correct) ? Colors.green : color)),
                 ),
