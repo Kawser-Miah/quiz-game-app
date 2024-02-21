@@ -22,7 +22,8 @@ class QuestionBloc extends Bloc<QuestionEvent, QuestionState> {
     on<ShowQuestionEvent>((event, emit) {
       emit(QuestionLoadingState());
 
-      emit(ShowQuestionState(results: event.results));
+      emit(ShowQuestionState(
+          results: event.results, selectOption: event.selectOption));
     });
   }
 }

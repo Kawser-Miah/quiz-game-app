@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:quiz_app_v1/src/options.dart';
 import '../data_source/bloc/question_bloc.dart';
-import '../view/select_option_bloc/select_option_bloc.dart';
+import '../helper/enum_class.dart';
 import 'complete_page.dart';
 
 class HomePage extends StatefulWidget {
@@ -29,10 +29,14 @@ class _HomePageState extends State<HomePage> {
             } else if (state is QuestionLoadingState) {
               return _loading();
             } else if (state is QuestionLoadedState) {
-              BlocProvider.of<QuestionBloc>(context)
-                  .add(ShowQuestionEvent(results: state.results));
-              BlocProvider.of<SelectOptionBloc>(context).add(InitialEvent());
+              BlocProvider.of<QuestionBloc>(context).add(ShowQuestionEvent(
+                  results: state.results, selectOption: SelectOption.initial));
             } else if (state is ShowQuestionState) {
+              if (state.selectOption == SelectOption.correct) {
+                correct++;
+              } else if (state.selectOption == SelectOption.incorrect) {
+                incorrect++;
+              }
               return Column(
                 children: [
                   SizedBox(
@@ -142,61 +146,55 @@ class _HomePageState extends State<HomePage> {
                   ),
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 18),
-                    child: BlocBuilder<SelectOptionBloc, SelectOptionState>(
-                      builder: (context, subState) {
-                        if (subState is CorrectOptionState) {
-                          correct++;
-                        } else if (subState is IncorrectOptionState) {
-                          incorrect++;
-                        }
-                        return ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.deepPurpleAccent,
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 20, vertical: 15),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                            elevation: 10,
-                          ),
-                          onPressed: (subState is CorrectOptionState ||
-                                  subState is IncorrectOptionState)
-                              ? () {
-                                  if (state.results!.length - 1 >
-                                      questionCount) {
-                                    questionCount++;
-                                    BlocProvider.of<QuestionBloc>(context).add(
-                                        ShowQuestionEvent(
-                                            results: state.results));
-                                    BlocProvider.of<SelectOptionBloc>(context)
-                                        .add(InitialEvent());
-                                  } else {
-                                    BlocProvider.of<SelectOptionBloc>(context)
-                                        .add(InitialEvent());
-                                    Navigator.pushReplacement(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (context) => Completed(
-                                                  correct: correct,
-                                                  incorrect: incorrect,
-                                                )));
-                                  }
-                                }
-                              : null,
-                          child: Center(
-                            child: Text(
-                              "Next",
-                              style: TextStyle(
-                                  color: (subState is CorrectOptionState ||
-                                          subState is IncorrectOptionState)
+                    child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.deepPurpleAccent,
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 20, vertical: 15),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        elevation: 10,
+                      ),
+                      onPressed: (state.selectOption == SelectOption.correct ||
+                              state.selectOption == SelectOption.incorrect)
+                          ? () {
+                              if (state.results!.length - 1 > questionCount) {
+                                questionCount++;
+                                BlocProvider.of<QuestionBloc>(context).add(
+                                    ShowQuestionEvent(
+                                        results: state.results,
+                                        selectOption: SelectOption.initial));
+                              } else {
+                                BlocProvider.of<QuestionBloc>(context).add(
+                                    ShowQuestionEvent(
+                                        results: state.results,
+                                        selectOption: SelectOption.initial));
+
+                                Navigator.pushReplacement(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => Completed(
+                                              correct: correct,
+                                              incorrect: incorrect,
+                                            )));
+                              }
+                            }
+                          : null,
+                      child: Center(
+                        child: Text(
+                          "Next",
+                          style: TextStyle(
+                              color:
+                                  (state.selectOption == SelectOption.correct ||
+                                          state.selectOption ==
+                                              SelectOption.incorrect)
                                       ? Colors.white
                                       : Colors.black,
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.bold),
-                            ),
-                          ),
-                        );
-                      },
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold),
+                        ),
+                      ),
                     ),
                   )
                 ],
