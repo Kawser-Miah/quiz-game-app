@@ -21,6 +21,7 @@ class QuestionErrorState extends QuestionState {
 class ShowQuestionState extends QuestionState {
   final List<QuestionModel>? results;
   final SelectOption selectOption;
+  final String? groupValue;
 
-  ShowQuestionState({required this.results, required this.selectOption});
+  ShowQuestionState({required this.groupValue, required this.results, required this.selectOption});
 }

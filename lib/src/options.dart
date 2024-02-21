@@ -17,6 +17,7 @@ class Options extends StatelessWidget {
     return BlocBuilder<QuestionBloc, QuestionState>(
       builder: (context, state) {
         if (state is ShowQuestionState) {
+          groupValue = state.groupValue;
           switch (state.selectOption) {
             case SelectOption.correct:
               enable = false;
@@ -60,13 +61,13 @@ class Options extends StatelessWidget {
                                         ShowQuestionEvent(
                                             results: state.results,
                                             selectOption:
-                                                SelectOption.correct));
+                                                SelectOption.correct, groupValue: val));
                                   } else if (option != correct) {
                                     BlocProvider.of<QuestionBloc>(context).add(
                                         ShowQuestionEvent(
                                             results: state.results,
                                             selectOption:
-                                                SelectOption.incorrect));
+                                                SelectOption.incorrect, groupValue: val));
                                   }
                                 }
                               : null,
