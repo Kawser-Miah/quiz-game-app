@@ -30,7 +30,9 @@ class _HomePageState extends State<HomePage> {
               return _loading();
             } else if (state is QuestionLoadedState) {
               BlocProvider.of<QuestionBloc>(context).add(ShowQuestionEvent(
-                  results: state.results, selectOption: SelectOption.initial, groupValue: ''));
+                  results: state.results,
+                  selectOption: SelectOption.initial,
+                  groupValue: ''));
             } else if (state is ShowQuestionState) {
               if (state.selectOption == SelectOption.correct) {
                 correct++;
@@ -164,12 +166,14 @@ class _HomePageState extends State<HomePage> {
                                 BlocProvider.of<QuestionBloc>(context).add(
                                     ShowQuestionEvent(
                                         results: state.results,
-                                        selectOption: SelectOption.initial, groupValue: ''));
+                                        selectOption: SelectOption.initial,
+                                        groupValue: ''));
                               } else {
                                 BlocProvider.of<QuestionBloc>(context).add(
                                     ShowQuestionEvent(
                                         results: state.results,
-                                        selectOption: SelectOption.initial, groupValue: ''));
+                                        selectOption: SelectOption.initial,
+                                        groupValue: ''));
 
                                 Navigator.pushReplacement(
                                     context,
