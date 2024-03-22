@@ -1,27 +1,25 @@
+import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:quiz_app_v1/data_source/database/question_database.dart';
 import 'package:quiz_app_v1/data_source/model/question_model.dart';
 import '../../helper/enum_class.dart';
 
-abstract class QuestionState {}
+part 'question_state.freezed.dart';
 
-class QuestionInitialState extends QuestionState {}
 
-class QuestionLoadingState extends QuestionState {}
+@freezed
+abstract class QuestionState with _$QuestionState {
+  const factory QuestionState.questionInitialState() = QuestionInitialState;
 
-class QuestionLoadedState extends QuestionState {
-  final List<QuestionModel>? results;
-  QuestionLoadedState({required this.results});
-}
+  const factory QuestionState.questionLoadingState() = QuestionLoadingState;
 
-class QuestionErrorState extends QuestionState {
-  final String errorMessage;
+  const factory QuestionState.questionLoadedState(
+      {required List<QuestionModel>? results}) = QuestionLoadedState;
 
-  QuestionErrorState({required this.errorMessage});
-}
+  const factory QuestionState.questionErrorState(
+      {required String errorMessage}) = QuestionErrorState;
 
-class ShowQuestionState extends QuestionState {
-  final List<QuestionModel>? results;
-  final SelectOption selectOption;
-  final String? groupValue;
-
-  ShowQuestionState({required this.groupValue, required this.results, required this.selectOption});
+  const factory QuestionState.showQuestionState(
+      {required List<QuestionModel>? results,
+      required SelectOption selectOption,
+      required String? groupValue}) = ShowQuestionState;
 }

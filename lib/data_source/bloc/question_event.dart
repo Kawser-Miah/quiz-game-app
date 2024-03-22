@@ -1,14 +1,17 @@
+import 'package:freezed_annotation/freezed_annotation.dart';
+
 import '../../helper/enum_class.dart';
 import '../model/question_model.dart';
 
-abstract class QuestionEvent {}
+part 'question_event.freezed.dart';
 
-class QuestionFetchRequestEvent extends QuestionEvent {}
 
-class ShowQuestionEvent extends QuestionEvent {
-  final List<QuestionModel>? results;
-  final SelectOption selectOption;
-  final String? groupValue;
+@freezed
+abstract class QuestionEvent with _$QuestionEvent {
+  const factory QuestionEvent.showQuestionEvent(
+      {required List<QuestionModel>? results,
+      required SelectOption selectOption,
+      required String? groupValue}) = ShowQuestionEvent;
 
-  ShowQuestionEvent({required this.groupValue, required this.results, required this.selectOption});
+  const factory QuestionEvent.questionFetchRequestEvent()=QuestionFetchRequestEvent;
 }
