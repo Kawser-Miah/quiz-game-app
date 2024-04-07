@@ -1,7 +1,9 @@
+import 'package:injectable/injectable.dart';
+
 import '../database/question_database.dart';
 import '../model/question_model.dart';
 import 'dart:math';
-
+@injectable
 class QuestionGenerator {
   Future<List<QuestionModel>> getQuestion() async {
     List<QuestionModel> questions = [];
@@ -18,6 +20,8 @@ class QuestionGenerator {
       bool checker = true;
       for (int j = 0; j < count; j++) {
         String? option = result[Random().nextInt(result.length)].vocabulary;
+
+
 
         checker = _checker(helper, option);
         if (checker) {

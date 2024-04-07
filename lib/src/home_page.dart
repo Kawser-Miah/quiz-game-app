@@ -18,7 +18,7 @@ class _HomePageState extends State<HomePage> {
   int incorrect = 0;
   @override
   Widget build(BuildContext context) {
-    BlocProvider.of<QuestionBloc>(context).add(QuestionFetchRequestEvent());
+    BlocProvider.of<QuestionBloc>(context).add(const QuestionEvent.questionFetchRequestEvent());
     return Scaffold(
       body: Padding(
         padding: const EdgeInsets.all(8),
@@ -29,7 +29,7 @@ class _HomePageState extends State<HomePage> {
             } else if (state is QuestionLoadingState) {
               return _loading();
             } else if (state is QuestionLoadedState) {
-              BlocProvider.of<QuestionBloc>(context).add(ShowQuestionEvent(
+              BlocProvider.of<QuestionBloc>(context).add(QuestionEvent.showQuestionEvent(
                   results: state.results,
                   selectOption: SelectOption.initial,
                   groupValue: ''));
