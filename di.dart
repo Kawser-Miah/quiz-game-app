@@ -1,1 +1,2 @@
-Void funtion(){}
+abstract class A{
+  void function();}
